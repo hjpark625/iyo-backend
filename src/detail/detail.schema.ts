@@ -12,8 +12,8 @@ export class Detail extends Document {
   @Prop({ type: String, required: true })
   engName: string;
 
-  @Prop({ type: String, nullable: true })
-  category?: string;
+  @Prop({ type: String, required: false, default: null })
+  category?: string | null;
 
   @Prop({ type: String, required: true })
   address: string;
