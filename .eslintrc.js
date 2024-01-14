@@ -13,7 +13,7 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
-    'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
+    'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
     'no-unused-vars': 'warn',
     '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/consistent-type-imports': 'error',
