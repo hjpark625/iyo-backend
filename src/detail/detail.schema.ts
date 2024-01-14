@@ -24,9 +24,6 @@ export class Detail extends Document {
   @Prop({ type: String, required: false, default: null })
   detailAddress: string | null;
 
-  @Prop({ type: String, required: false, default: null })
-  socialLinks!: string | null;
-
   @Prop({ type: Object, required: false, default: null })
   nearestRoute: {
     subwayLine: string[] | null;
