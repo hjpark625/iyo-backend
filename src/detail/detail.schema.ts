@@ -13,6 +13,9 @@ export class Detail extends Document {
   engName: string;
 
   @Prop({ type: String, required: false, default: null })
+  socialLink: string | null;
+
+  @Prop({ type: String, required: false, default: null })
   category?: string | null;
 
   @Prop({ type: String, required: true })
