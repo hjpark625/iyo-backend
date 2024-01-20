@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Detail } from '@/detail/detail.schema';
-import { DetailModel } from '@/dto/detail.dto';
+import { DetailDTO, DetailModel, DetailResponseDTO } from '@/dto/detail.dto';
 
 @Injectable()
 export class DetailService {
@@ -12,12 +12,13 @@ export class DetailService {
 
     try {
       const detailData = await this.detailModel.findOne({ engName: storeName }).exec();
-
       if (detailData == null) throw new HttpException('상점 정보를 찾을 수 없습니다.', HttpStatus.NOT_FOUND);
 
-      return {
-        data: detailData,
-      };
+      const responseDetailData = new DetailDTO(detailData);
+
+      const responseData = new DetailResponseDTO(responseDetailData);
+
+      return responseData;
     } catch (err: unknown) {
       if (err instanceof HttpException) {
         throw new HttpException(err.getResponse(), err.getStatus());
