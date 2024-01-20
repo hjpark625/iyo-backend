@@ -1,6 +1,6 @@
 import type { Model, ObjectId } from 'mongoose';
 
-export interface IDetailSchema {
+export interface IDetailDTO {
   _id: ObjectId;
   name: string;
   engName: string;
@@ -17,11 +17,10 @@ export interface IDetailSchema {
     endTime: string | null;
   }[];
   phoneNumber: string | null;
-  lat: number;
-  lng: number;
+  coord: { lat: number; lng: number };
   description: string | null;
   concept: string[] | null;
   updatedAt: Date;
 }
 
-export type DetailModel = Model<IDetailSchema, object, object>;
+export type DetailModel = Model<IDetailDTO, object, object>;
