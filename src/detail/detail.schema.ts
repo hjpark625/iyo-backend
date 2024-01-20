@@ -49,6 +49,9 @@ export class Detail extends Document {
   @Prop({ type: String, required: false, default: null })
   introduce: string | null;
 
+  @Prop({ type: Array, required: false, default: null })
+  concept: string[] | null;
+
   @Prop({ type: Date, required: true })
   updatedAt: Date;
 }

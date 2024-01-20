@@ -20,6 +20,7 @@ export interface IDetailSchema {
   lat: number;
   lng: number;
   description: string | null;
+  concept: string[] | null;
   updatedAt: Date;
 }
 
