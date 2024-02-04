@@ -19,7 +19,7 @@ export interface IDetailData {
   phoneNumber: string | null;
   coord: { lat: number; lng: number };
   description: string | null;
-  concept: string[] | null;
+  concept: string[];
   updatedAt: Date;
   storeImages: {
     file_path: string;
@@ -46,7 +46,7 @@ export class DetailDTO implements IDetailData {
   phoneNumber: string | null;
   coord: { lat: number; lng: number };
   description: string | null;
-  concept: string[] | null;
+  concept: string[];
   updatedAt: Date;
   storeImages: {
     file_path: string;
