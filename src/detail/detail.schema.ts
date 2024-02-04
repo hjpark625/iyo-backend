@@ -54,6 +54,12 @@ export class Detail extends Document {
 
   @Prop({ type: Date, required: true })
   updatedAt: Date;
+
+  @Prop({ type: Array, required: false, default: [] })
+  storeImages: {
+    file_path: string;
+    photoId: ObjectId;
+  }[];
 }
 
 export const DetailSchema = SchemaFactory.createForClass(Detail);

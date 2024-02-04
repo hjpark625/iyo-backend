@@ -21,6 +21,10 @@ export interface IDetailData {
   description: string | null;
   concept: string[] | null;
   updatedAt: Date;
+  storeImages: {
+    file_path: string;
+    photoId: ObjectId;
+  }[];
 }
 
 export class DetailDTO implements IDetailData {
@@ -44,6 +48,11 @@ export class DetailDTO implements IDetailData {
   description: string | null;
   concept: string[] | null;
   updatedAt: Date;
+  storeImages: {
+    file_path: string;
+    photoId: ObjectId;
+  }[];
+
   constructor(data: IDetailData) {
     this._id = data._id;
     this.name = data.name;
@@ -58,6 +67,7 @@ export class DetailDTO implements IDetailData {
     this.description = data.description;
     this.concept = data.concept;
     this.updatedAt = data.updatedAt;
+    this.storeImages = data.storeImages;
   }
 }
 
