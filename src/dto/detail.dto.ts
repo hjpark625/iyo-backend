@@ -19,8 +19,12 @@ export interface IDetailData {
   phoneNumber: string | null;
   coord: { lat: number; lng: number };
   description: string | null;
-  concept: string[] | null;
+  concept: string[];
   updatedAt: Date;
+  storeImages: {
+    file_path: string;
+    photoId: ObjectId;
+  }[];
 }
 
 export class DetailDTO implements IDetailData {
@@ -42,8 +46,13 @@ export class DetailDTO implements IDetailData {
   phoneNumber: string | null;
   coord: { lat: number; lng: number };
   description: string | null;
-  concept: string[] | null;
+  concept: string[];
   updatedAt: Date;
+  storeImages: {
+    file_path: string;
+    photoId: ObjectId;
+  }[];
+
   constructor(data: IDetailData) {
     this._id = data._id;
     this.name = data.name;
@@ -58,6 +67,7 @@ export class DetailDTO implements IDetailData {
     this.description = data.description;
     this.concept = data.concept;
     this.updatedAt = data.updatedAt;
+    this.storeImages = data.storeImages;
   }
 }
 
