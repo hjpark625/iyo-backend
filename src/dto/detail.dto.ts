@@ -24,6 +24,8 @@ export interface IDetailData {
   storeImages: {
     file_path: string;
     photoId: ObjectId;
+    width: number;
+    height: number;
   }[];
 }
 
@@ -51,6 +53,8 @@ export class DetailDTO implements IDetailData {
   storeImages: {
     file_path: string;
     photoId: ObjectId;
+    width: number;
+    height: number;
   }[];
 
   constructor(data: IDetailData) {
