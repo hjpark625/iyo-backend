@@ -59,6 +59,8 @@ export class Detail extends Document {
   storeImages: {
     file_path: string;
     photoId: ObjectId;
+    width: number;
+    height: number;
   }[];
 }
 
