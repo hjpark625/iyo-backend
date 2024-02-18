@@ -3,3 +3,7 @@ dist
 .eslintrc.js
 .gitignore
 .prettierrc
+.env
+.nvmrc
+.vscode
+.git
