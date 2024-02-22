@@ -1,5 +1,5 @@
 import { Controller, Get, HttpCode, HttpException, HttpStatus } from '@nestjs/common';
-import { PinsService } from './pins.service';
+import { PinsService } from '@/pins/pins.service';
 
 @Controller('pins')
 export class PinsController {
