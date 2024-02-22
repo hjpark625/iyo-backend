@@ -1,7 +1,7 @@
-import { Detail } from '@/detail/detail.schema';
-import { DetailModel } from '@/dto/detail.dto';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Detail } from '@/detail/detail.schema';
+import { DetailModel } from '@/dto/detail.dto';
 
 @Injectable()
 export class PinsService {
