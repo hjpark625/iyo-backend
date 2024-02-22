@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Detail } from '@/detail/detail.schema';
-import { PinsSchema } from '@/pins/pins.schema';
+import { Detail, DetailSchema } from '@/detail/detail.schema';
 import { PinsController } from '@/pins/pins.controller';
 import { PinsService } from '@/pins/pins.service';
 
@@ -11,7 +10,7 @@ import { PinsService } from '@/pins/pins.service';
       {
         name: Detail.name,
         useFactory: () => {
-          const schema = PinsSchema;
+          const schema = DetailSchema;
           return schema;
         },
       },
