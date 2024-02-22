@@ -10,15 +10,7 @@ export class PinsController {
   async getPinsData() {
     try {
       const result = await this.pinsService.getPinsData();
-      const mappedResult = result.map((item) => ({
-        _id: item._id,
-        lat: item.coord.lat,
-        lng: item.coord.lng,
-        name: item.name,
-        engName: item.engName,
-      }));
-
-      return { pins: mappedResult };
+      return result;
     } catch (err: unknown) {
       if (err instanceof HttpException) {
         throw new HttpException({ message: err.getResponse() }, err.getStatus());
