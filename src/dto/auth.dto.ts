@@ -30,8 +30,11 @@ export interface IUserModel extends Model<UserData, object, IUserInstanceType> {
 }
 
 export interface IDecodedTokenInfo extends JwtPayload {
-  _id: ObjectId;
+  userId: string;
   email: string;
+  hashedPassword: string;
+  iat: number;
+  exp: number;
 }
 
 export class UserDTO {

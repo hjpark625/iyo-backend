@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@/auth/auth.schema';
 import { IUserModel } from '@/dto/auth.dto';
@@ -25,22 +26,30 @@ export class AuthService {
   }
 
   async logoutUser(refreshToken: string) {
-    const { _id } = this.jwtService.verify<IDecodedTokenInfo>(refreshToken);
-    const user = await this.userModel.findById({ _id });
+    try {
+      const token = await this.checkHeader(refreshToken);
 
-    if (!user) throw new HttpException('존재하지 않는 유저입니다.', HttpStatus.NOT_FOUND);
-    if (user.refreshToken !== refreshToken) {
-      throw new HttpException('토큰이 일치하지 않거나 잘못된 토큰입니다.', HttpStatus.UNAUTHORIZED);
+      const { userId } = this.jwtService.verify<IDecodedTokenInfo>(token);
+
+      const user = await this.userModel.findById(new mongoose.Types.ObjectId(userId));
+
+      if (!user) throw new HttpException('존재하지 않는 유저입니다.', HttpStatus.NOT_FOUND);
+      if (user.refreshToken !== token) {
+        throw new HttpException('토큰이 일치하지 않거나 잘못된 토큰입니다.', HttpStatus.UNAUTHORIZED);
+      }
+
+      await this.userModel.findByIdAndUpdate(user._id, { refreshToken: null });
+      return;
+    } catch (err: unknown) {
+      if (err instanceof HttpException) {
+        throw new HttpException({ message: err.message, status: err.getStatus() }, err.getStatus());
+      }
     }
-
-    await this.userModel.findByIdAndUpdate(user._id, { refreshToken: '' });
-
-    return;
   }
 
   async checkHeader(header: string) {
     if (!header) throw new HttpException('헤더가 존재하지 않습니다', HttpStatus.BAD_REQUEST);
-    const [tokenType, tokenValue] = header.split(' ');
+    const [tokenType, tokenValue] = header.split(/\s+/g);
     if (tokenType !== 'Bearer') throw new HttpException('올바른 토큰 타입이 아닙니다.', HttpStatus.BAD_REQUEST);
     if (tokenValue == null) throw new HttpException('토큰이 존재하지 않습니다.', HttpStatus.BAD_REQUEST);
     return tokenValue;
