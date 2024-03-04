@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggingMiddleware } from '@/middleware/logging.middleware';
 import { DetailModule } from '@/detail/detail.module';
 import { PinsModule } from '@/pins/pins.module';
+import { AuthModule } from '@/auth/auth.module';
 import { AppController } from '@/app.controller';
 import type { MiddlewareConsumer } from '@nestjs/common';
 import type { MongooseModuleFactoryOptions } from '@nestjs/mongoose';
@@ -20,6 +21,7 @@ import type { MongooseModuleFactoryOptions } from '@nestjs/mongoose';
     }),
     DetailModule,
     PinsModule,
+    AuthModule,
   ],
   controllers: [AppController],
 })
