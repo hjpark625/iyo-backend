@@ -32,22 +32,10 @@ import type { ObjectId } from 'mongoose';
             return result;
           };
 
-          schema.methods.saveRefreshToken = async function (refreshToken: string) {
-            this.refreshToken = refreshToken;
-            await this.save();
-          };
-
-          schema.methods.serialize = function () {
-            const data = this.toJSON();
-            delete data.hashedPassword;
-            delete data.refreshToken;
-            return data;
-          };
-
           schema.methods.generateAccessToken = function () {
             const accessToken = jwt.sign(
               {
-                _id: this._id as ObjectId,
+                userId: this._id as ObjectId,
                 email: this.email,
               },
               configService.get<string>('JWT_SECRET'),
@@ -62,7 +50,7 @@ import type { ObjectId } from 'mongoose';
           schema.methods.generateRefreshToken = function () {
             const refreshToken = jwt.sign(
               {
-                _id: this._id as ObjectId,
+                userId: this._id as ObjectId,
                 email: this.email,
                 hashedPassword: this.hashedPassword,
               },
@@ -75,8 +63,16 @@ import type { ObjectId } from 'mongoose';
             return refreshToken;
           };
 
+          schema.methods.serialize = function () {
+            const data = this.toJSON();
+            delete data.hashedPassword;
+            delete data.refreshToken;
+            return data;
+          };
+
           schema.statics.findByAdminEmail = function (email: string) {
-            return this.findOne({ email, isAdmin: true });
+            const userData = this.findOne({ email });
+            return userData;
           };
 
           return schema;

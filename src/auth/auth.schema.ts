@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, ObjectId } from 'mongoose';
+import mongoose, { Document, type ObjectId } from 'mongoose';
 
 @Schema()
 export class User extends Document {
-  @Prop({ type: String, required: true })
+  @Prop({ type: mongoose.Types.ObjectId, required: true })
   _id: ObjectId;
 
   @Prop({ type: String, required: true })
@@ -19,10 +19,10 @@ export class User extends Document {
   updatedAt: Date | null;
 
   @Prop({ type: String, required: false, default: null })
-  accessToken: string | null;
-
-  @Prop({ type: String, required: false, default: null })
   refreshToken: string | null;
+
+  @Prop({ type: Boolean, required: false, default: false })
+  isAdmin: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
