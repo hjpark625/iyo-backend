@@ -21,6 +21,9 @@ export class User extends Document {
   @Prop({ type: Date, required: false, default: null })
   updatedAt: Date | null;
 
+  @Prop({ type: Date, required: false, default: null })
+  lastLoginAt: Date | null;
+
   @Prop({ type: String, required: false, default: null })
   refreshToken: string | null;
 

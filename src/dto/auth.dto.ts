@@ -32,6 +32,7 @@ export class UserDTO {
   hashedPassword: string;
   createdAt: Date;
   updatedAt: Date | null;
+  lastLoginAt: Date | null;
   isAdmin: boolean;
 
   constructor(data: User) {
@@ -40,6 +41,7 @@ export class UserDTO {
     this.nickname = data.nickname;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
+    this.lastLoginAt = data.lastLoginAt;
     this.isAdmin = data.isAdmin;
   }
 }

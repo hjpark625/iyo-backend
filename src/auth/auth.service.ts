@@ -21,7 +21,7 @@ export class AuthService {
       const accessToken = user.generateAccessToken();
       const refreshToken = user.generateRefreshToken();
 
-      await this.userModel.findByIdAndUpdate(user._id, { refreshToken });
+      await this.userModel.findByIdAndUpdate(user._id, { refreshToken, lastLoginAt: new Date() });
 
       return { accessToken, refreshToken, user };
     } catch (err: unknown) {
