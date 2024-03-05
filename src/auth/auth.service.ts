@@ -8,7 +8,10 @@ import type { IDecodedTokenInfo } from '@/dto/auth.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel(User.name) private userModel: IUserModel, private jwtService: JwtService) {}
+  constructor(
+    @InjectModel(User.name) private userModel: IUserModel,
+    private jwtService: JwtService,
+  ) {}
 
   async loginWithValidateUser(email: string, password: string) {
     try {
