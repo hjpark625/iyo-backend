@@ -54,6 +54,7 @@ export class AuthController {
   async revalidateToken(@Headers('Authorization') refreshToken: string) {
     try {
       const result = await this.authService.revalidateAccessToken(refreshToken);
+      if (result == null) throw new HttpException('토큰이 만료되었습니다.', HttpStatus.UNAUTHORIZED);
       return { result };
     } catch (err: unknown) {
       if (err instanceof HttpException) {
