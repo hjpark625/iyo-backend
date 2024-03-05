@@ -3,7 +3,7 @@ import mongoose, { Document, type ObjectId } from 'mongoose';
 
 @Schema()
 export class User extends Document {
-  @Prop({ type: mongoose.Types.ObjectId, required: true })
+  @Prop({ type: mongoose.Types.ObjectId, required: true, unique: true })
   _id: ObjectId;
 
   @Prop({ type: String, required: true })
