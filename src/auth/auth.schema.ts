@@ -10,6 +10,9 @@ export class User extends Document {
   email: string;
 
   @Prop({ type: String, required: true })
+  nickname: string;
+
+  @Prop({ type: String, required: true })
   hashedPassword: string;
 
   @Prop({ type: Date, required: false, default: new Date() })
@@ -17,6 +20,9 @@ export class User extends Document {
 
   @Prop({ type: Date, required: false, default: null })
   updatedAt: Date | null;
+
+  @Prop({ type: Date, required: false, default: null })
+  lastLoginAt: Date | null;
 
   @Prop({ type: String, required: false, default: null })
   refreshToken: string | null;

@@ -1,32 +1,20 @@
 import type { JwtPayload } from 'jsonwebtoken';
-import type { HydratedDocument, Model, ObjectId } from 'mongoose';
-
-export class UserData {
-  _id: ObjectId;
-  email: string;
-  password?: string;
-  hashedPassword: string;
-  createdAt: Date;
-  updatedAt: Date | null;
-  refreshToken: string | null;
-  isAdmin: boolean;
-}
+import type { HydratedDocument, ObjectId, Model } from 'mongoose';
+import { User } from '@/auth/auth.schema';
 
 export interface ILoginInfo {
   email: string;
   password: string;
 }
 
-export class IUserInstanceType extends UserData {
+export abstract class UserMethodsClass extends User {
   checkPassword: (password: string) => Promise<boolean>;
-  serialize: () => UserData;
-  saveRefreshToken: (refreshToken: string) => Promise<void>;
   generateAccessToken: () => string;
   generateRefreshToken: () => string;
 }
 
-export interface IUserModel extends Model<UserData, object, IUserInstanceType> {
-  findByAdminEmail: (email: string) => Promise<HydratedDocument<UserData, IUserInstanceType>>;
+export interface IUserModel extends Model<User, object, UserMethodsClass> {
+  findByAdminEmail: (email: string) => Promise<HydratedDocument<User, UserMethodsClass>>;
 }
 
 export interface IDecodedTokenInfo extends JwtPayload {
@@ -40,16 +28,20 @@ export interface IDecodedTokenInfo extends JwtPayload {
 export class UserDTO {
   userId: ObjectId;
   email: string;
+  nickname: string;
   hashedPassword: string;
   createdAt: Date;
   updatedAt: Date | null;
+  lastLoginAt: Date | null;
   isAdmin: boolean;
 
-  constructor(data: UserData) {
+  constructor(data: User) {
     this.userId = data._id;
     this.email = data.email;
+    this.nickname = data.nickname;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
+    this.lastLoginAt = data.lastLoginAt;
     this.isAdmin = data.isAdmin;
   }
 }
@@ -61,11 +53,7 @@ export class LoginResponseDto {
     refreshToken: string;
   };
 
-  constructor(userData: {
-    user: HydratedDocument<UserData, IUserInstanceType>;
-    accessToken: string;
-    refreshToken: string;
-  }) {
+  constructor(userData: { user: HydratedDocument<User, UserMethodsClass>; accessToken: string; refreshToken: string }) {
     this.user = {
       info: new UserDTO(userData.user),
       accessToken: userData.accessToken,

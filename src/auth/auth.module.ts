@@ -63,13 +63,6 @@ import type { ObjectId } from 'mongoose';
             return refreshToken;
           };
 
-          schema.methods.serialize = function () {
-            const data = this.toJSON();
-            delete data.hashedPassword;
-            delete data.refreshToken;
-            return data;
-          };
-
           schema.statics.findByAdminEmail = function (email: string) {
             const userData = this.findOne({ email });
             return userData;
