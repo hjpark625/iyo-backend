@@ -48,4 +48,22 @@ export class AuthController {
       }
     }
   }
+
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  async revalidateToken(@Headers('Authorization') refreshToken: string) {
+    try {
+      const result = await this.authService.revalidateAccessToken(refreshToken);
+      return { result };
+    } catch (err: unknown) {
+      if (err instanceof HttpException) {
+        throw new HttpException({ message: err.message, status: err.getStatus() }, err.getStatus());
+      } else {
+        throw new HttpException(
+          { message: `${err}`, status: HttpStatus.INTERNAL_SERVER_ERROR },
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+    }
+  }
 }

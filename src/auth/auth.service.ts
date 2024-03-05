@@ -69,10 +69,12 @@ export class AuthService {
 
   async revalidateAccessToken(refreshToken: string) {
     try {
-      const { _id } = this.jwtService.verify<IDecodedTokenInfo>(refreshToken);
-      const user = await this.userModel.findById({ _id });
+      const token = await this.checkHeader(refreshToken);
+      const { userId } = this.jwtService.verify<IDecodedTokenInfo>(token);
+      const user = await this.userModel.findById(new mongoose.Types.ObjectId(userId));
 
-      if (user && user.refreshToken === refreshToken) {
+      if (!user) throw new HttpException('존재하지 않는 유저입니다.', HttpStatus.NOT_FOUND);
+      if (user.refreshToken === token) {
         const accessToken = user.generateAccessToken();
         return { accessToken };
       } else {
