@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
+import mongoose from 'mongoose';
 import { User } from '@/auth/auth.schema';
 import { IUserModel } from '@/dto/auth.dto';
 import type { IDecodedTokenInfo } from '@/dto/auth.dto';
