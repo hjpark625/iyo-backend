@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { JwtService } from '@nestjs/jwt';
+import { JsonWebTokenError, JwtService } from '@nestjs/jwt';
 import mongoose from 'mongoose';
 import { User } from '@/auth/auth.schema';
 import { IUserModel } from '@/dto/auth.dto';
@@ -53,6 +53,9 @@ export class AuthService {
       if (err instanceof HttpException) {
         throw new HttpException({ message: err.message, status: err.getStatus() }, err.getStatus());
       }
+      if (err instanceof JsonWebTokenError) {
+        throw new HttpException({ message: err.message, status: HttpStatus.UNAUTHORIZED }, HttpStatus.UNAUTHORIZED);
+      }
     }
   }
 
@@ -86,6 +89,9 @@ export class AuthService {
     } catch (err: unknown) {
       if (err instanceof HttpException) {
         throw new HttpException({ message: err.message, status: err.getStatus() }, err.getStatus());
+      }
+      if (err instanceof JsonWebTokenError) {
+        throw new HttpException({ message: err.message, status: HttpStatus.UNAUTHORIZED }, HttpStatus.UNAUTHORIZED);
       }
     }
   }
