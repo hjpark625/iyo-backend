@@ -7,6 +7,12 @@ export interface ILoginInfo {
   password: string;
 }
 
+export interface IRegisterInfo {
+  email: string;
+  password: string;
+  nickname: string | null;
+}
+
 export abstract class UserMethodsClass extends User {
   checkPassword: (password: string) => Promise<boolean>;
   generateAccessToken: () => string;

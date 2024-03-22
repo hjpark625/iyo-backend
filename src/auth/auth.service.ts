@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JsonWebTokenError, JwtService } from '@nestjs/jwt';
 import mongoose from 'mongoose';
+import * as bcrypt from 'bcrypt';
 import { User } from '@/auth/auth.schema';
 import { IUserModel } from '@/dto/auth.dto';
 import type { IDecodedTokenInfo } from '@/dto/auth.dto';
@@ -24,6 +25,40 @@ export class AuthService {
       await this.userModel.findByIdAndUpdate(user._id, { refreshToken, lastLoginAt: new Date() });
 
       return { accessToken, refreshToken, user };
+    } catch (err: unknown) {
+      if (err instanceof HttpException) {
+        throw new HttpException({ message: err.message, status: err.getStatus() }, err.getStatus());
+      }
+    }
+  }
+
+  async hashingPassword(password: string) {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    return hashedPassword;
+  }
+
+  async registerUser(email: string, password: string, nickname: string | null) {
+    try {
+      const user = await this.userModel.findByAdminEmail(email);
+      if (user) throw new HttpException('이미 존재하는 어드민 계정입니다.', HttpStatus.CONFLICT);
+
+      const tempNickname = email.split('@')[0];
+      const hashedPassword = await this.hashingPassword(password);
+
+      const newUser = new this.userModel({
+        _id: new mongoose.Types.ObjectId(),
+        email,
+        hashedPassword,
+        nickname: nickname ?? tempNickname,
+      });
+
+      const accessToken = newUser.generateAccessToken();
+      const refreshToken = newUser.generateRefreshToken();
+
+      await newUser.save();
+
+      return { accessToken, refreshToken, user: newUser };
     } catch (err: unknown) {
       if (err instanceof HttpException) {
         throw new HttpException({ message: err.message, status: err.getStatus() }, err.getStatus());
