@@ -16,7 +16,6 @@ export class AuthController {
 
     try {
       const result = await this.authService.registerUser(email, password, nickname);
-      console.log(result);
       const responseData = new LoginResponseDto(result);
 
       return responseData;
