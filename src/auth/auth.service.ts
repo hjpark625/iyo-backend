@@ -9,10 +9,7 @@ import type { IDecodedTokenInfo } from '@/dto/auth.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    @InjectModel(User.name) private userModel: IUserModel,
-    private jwtService: JwtService,
-  ) {}
+  constructor(@InjectModel(User.name) private userModel: IUserModel, private jwtService: JwtService) {}
 
   async loginWithValidateUser(email: string, password: string) {
     try {
@@ -49,8 +46,12 @@ export class AuthService {
       const tempNickname = email.split('@')[0];
       const hashedPassword = await this.hashingPassword(password);
 
-      const newUser = new this.userModel({ email, hashedPassword, nickname: nickname ?? tempNickname });
-      console.log(newUser);
+      const newUser = new this.userModel({
+        _id: new mongoose.Types.ObjectId(),
+        email,
+        hashedPassword,
+        nickname: nickname ?? tempNickname,
+      });
 
       const accessToken = newUser.generateAccessToken();
       const refreshToken = newUser.generateRefreshToken();
@@ -59,7 +60,6 @@ export class AuthService {
 
       return { accessToken, refreshToken, user: newUser };
     } catch (err: unknown) {
-      console.log(err);
       if (err instanceof HttpException) {
         throw new HttpException({ message: err.message, status: err.getStatus() }, err.getStatus());
       }
